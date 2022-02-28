@@ -1,59 +1,47 @@
-import styles from '../styles/Home.module.css'
+import { ReactElement } from 'react'
+import { Button, Col, Container, FloatingLabel, Form, Row } from 'react-bootstrap'
+import Layout from '../components/layout'
 
 export default function Home() {
-  return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+    return (
+        <Container className='px-4 py-5'>
+            <Row className='align-items-center g-lg-5 py-5'>
+                <Col lg={7} className='align-items-center g-lg-5 py-5'>
+                    <h1 className="display-4 fw-bold lh-1 mb-3">Vertically centered hero sign-up form</h1>
+                    <p className="col-lg-10 fs-4">Below is an example form built entirely with Bootstrap’s form controls. Each required form group has a validation state that can be triggered by attempting to submit the form without completing it.</p>
+                </Col>
+                <Col md={10} lg={5} className='mx-auto'>
+                    <Form className='p-4 p-md-5 border rounded-3 bg-light'>
+                        <>
+                            <FloatingLabel
+                                controlId="floatingEmailLabel"
+                                label="Email address"
+                                className="mb-3"
+                            >
+                                <Form.Control type="email" placeholder="name@example.com" />
+                            </FloatingLabel>
+                        </>
+                        <>
+                            <FloatingLabel
+                                controlId="floatingPasswordLabel"
+                                label="Password"
+                                className="mb-3"
+                            >
+                                <Form.Control type="password" placeholder="password" />
+                            </FloatingLabel>
+                        </>
+                        <Button className='w-100' variant='primary' size='lg' type='submit'>Log In</Button>
+                    </Form>
+                </Col>
+            </Row>
+        </Container>
+    )
+}
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
+Home.getLayout = function getLayout(page: ReactElement) {
+    return (
+        <Layout>
+            {page}
+        </Layout>
+    )
 }
