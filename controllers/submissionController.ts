@@ -1,15 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import Submission from "../models/submission";
+import submissionModel from "../models/submissionModel";
 
 export class SubmissionController {
 
     public async getSubmissions(req: NextApiRequest, res: NextApiResponse): Promise<void> {
-        const submissions = await Submission.find();
+        const submissions = await submissionModel.find();
         res.json({ submissions });
     }
 
     public async getSubmission(req: NextApiRequest, res: NextApiResponse): Promise<void> {
-        const submission = await Submission.findOne({ _id: req.query.id });
+        const submission = await submissionModel.findOne({ _id: req.query.id });
         if (submission === null) {
             res.status(404);
         } else {
@@ -18,10 +18,9 @@ export class SubmissionController {
     }
 
     public async createSubmission(req: NextApiRequest, res: NextApiResponse): Promise<void> {
-        const newSubmission = new Submission(req.body);
-        const submission = await Submission.findOne({ _id: req.body._id });
+        const submission = await submissionModel.findOne({ _id: req.body._id });
         if (submission === null) {
-            const result = await newSubmission.save();
+            const result = await submissionModel.create(req.body);
             if (result === null) {
                 res.status(500);
             } else {
@@ -34,7 +33,7 @@ export class SubmissionController {
     }
 
     public async updateSubmission(req: NextApiRequest, res: NextApiResponse): Promise<void> {
-        const submission = await Submission.findOneAndUpdate({ _id: req.query.id }, req.body);
+        const submission = await submissionModel.findOneAndUpdate({ _id: req.query.id }, req.body);
         if (submission === null) {
             res.status(404);
         } else {
@@ -44,7 +43,7 @@ export class SubmissionController {
     }
 
     public async deleteSubmission(req: NextApiRequest, res: NextApiResponse): Promise<void> {
-        const submission = await Submission.findOneAndDelete({ _id: req.query.id });
+        const submission = await submissionModel.findOneAndDelete({ _id: req.query.id });
         if (submission === null) {
             res.status(404);
         } else {

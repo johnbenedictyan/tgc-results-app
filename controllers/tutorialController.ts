@@ -1,15 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import Tutorial from "../models/tutorial";
+import tutorialModel from "../models/tutorialModel";
 
 export class TutorialController {
 
     public async getTutorials(req: NextApiRequest, res: NextApiResponse): Promise<void> {
-        const tutorials = await Tutorial.find();
+        const tutorials = await tutorialModel.find();
         res.json({ tutorials });
     }
 
     public async getTutorial(req: NextApiRequest, res: NextApiResponse): Promise<void> {
-        const tutorial = await Tutorial.findOne({ _id: req.query.id });
+        const tutorial = await tutorialModel.findOne({ _id: req.query.id });
         if (tutorial === null) {
             res.status(404);
         } else {
@@ -18,10 +18,9 @@ export class TutorialController {
     }
 
     public async createTutorial(req: NextApiRequest, res: NextApiResponse): Promise<void> {
-        const newTutorial = new Tutorial(req.body);
-        const tutorial = await Tutorial.findOne({ _id: req.body._id });
+        const tutorial = await tutorialModel.findOne({ _id: req.body._id });
         if (tutorial === null) {
-            const result = await newTutorial.save();
+            const result = await tutorialModel.create(req.body);
             if (result === null) {
                 res.status(500);
             } else {
@@ -34,7 +33,7 @@ export class TutorialController {
     }
 
     public async updateTutorial(req: NextApiRequest, res: NextApiResponse): Promise<void> {
-        const tutorial = await Tutorial.findOneAndUpdate({ _id: req.query.id }, req.body);
+        const tutorial = await tutorialModel.findOneAndUpdate({ _id: req.query.id }, req.body);
         if (tutorial === null) {
             res.status(404);
         } else {
@@ -44,7 +43,7 @@ export class TutorialController {
     }
 
     public async deleteTutorial(req: NextApiRequest, res: NextApiResponse): Promise<void> {
-        const tutorial = await Tutorial.findOneAndDelete({ _id: req.query.id });
+        const tutorial = await tutorialModel.findOneAndDelete({ _id: req.query.id });
         if (tutorial === null) {
             res.status(404);
         } else {
