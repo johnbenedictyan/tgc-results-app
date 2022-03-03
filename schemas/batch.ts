@@ -3,7 +3,9 @@ import userSchema from "./user";
 
 const batchSchema: Schema = new Schema({
     batchCode: String,
-    students: [userSchema]
+    students: [
+        {type: Schema.Types.ObjectId, ref: 'User'}
+    ]
 });
 
 export default batchSchema;

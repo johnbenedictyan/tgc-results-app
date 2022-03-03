@@ -1,22 +1,43 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { SubmissionController } from "../../../controllers/submissionController";
 import dbConnect from "../../../lib/dbConnect";
+import submissionModel from "../../../models/submissionModel";
+
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { method } = req;
 
-    const submissionController = new SubmissionController();
+    let submission;
 
     await dbConnect();
 
     switch (method) {
         case 'GET':
-            submissionController.getSubmission
+            submission = await submissionModel.findOne({ _id: req.query.id });
+            if (submission === null) {
+                res.status(404);
+            } else {
+                res.json(submission);
+            }
+            break;
         case 'PUT':
-            submissionController.updateSubmission
+            submission = await submissionModel.findOneAndUpdate({ _id: req.query.id }, req.body);
+            if (submission === null) {
+                res.status(404);
+            } else {
+                const updatedSubmission = { _id: req.query.id, ...req.body };
+                res.json({ status: res.status, data: updatedSubmission });
+            }
+            break;
         case 'DELETE':
-            submissionController.deleteSubmission
+            submission = await submissionModel.findOneAndDelete({ _id: req.query.id });
+            if (submission === null) {
+                res.status(404);
+            } else {
+                res.json({ NextApiResponse: "Submission deleted Successfully" });
+            }
+            break;
         default:
             res.status(400).json({ success: false });
+            break;
     }
 }

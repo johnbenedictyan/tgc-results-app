@@ -19,7 +19,7 @@ export class BatchController {
     }
 
     public async createBatch(req: NextApiRequest, res: NextApiResponse): Promise<void> {
-        const batch = await batchModel.findOne({ _id: req.body._id });
+        const batch = await batchModel.findOne({ batchCode: req.body.batchCode });
         if (batch === null) {
             const result = await batchModel.create(
                 req.body

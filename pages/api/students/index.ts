@@ -1,9 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { TutorialController } from "../../../controllers/tutorialController";
 import dbConnect from "../../../lib/dbConnect";
 import tutorialModel from "../../../models/tutorialModel";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { method } = req;
+
+    const tutorialController = new TutorialController();
 
     await dbConnect();
 

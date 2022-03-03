@@ -1,4 +1,5 @@
 interface ITutorial {
+    _id?: string;
     group: string;
     title: string;
     order: number;

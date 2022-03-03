@@ -1,8 +1,9 @@
-import IUser from "./user";
+import { Types } from "mongoose";
 
 interface IBatch {
+    _id?: string;
     batchCode: string;
-    students: Array<IUser>;
+    students: Array<Types.ObjectId | string>;
 }
 
 export default IBatch;
