@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ReactElement } from "react";
 import { Button, ButtonGroup, ButtonToolbar, Col, Row } from "react-bootstrap";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiEye, FiTrash2 } from "react-icons/fi";
 import DashboardLayout from "../../../components/dashboardLayout";
 import ITutorial from "../../../interfaces/tutorial";
 import dbConnect from "../../../lib/dbConnect";
@@ -55,6 +55,11 @@ const TutorialsHome = ({ tutorials }: TutorialsHomeProps) => {
                             </Col>
                             <Col>
                                 <ButtonToolbar className="justify-content-center">
+                                    <ButtonGroup>
+                                        <Link href="/dashboard/tutorials/[id]" as={`/dashboard/tutorials/${tutorial._id}`} >
+                                            <Button variant="outline-secondary" size="sm" className="mx-2"><FiEye></FiEye></Button>
+                                        </Link>
+                                    </ButtonGroup>
                                     <ButtonGroup>
                                         <Link href="/dashboard/tutorials/[id]/edit" as={`/dashboard/tutorials/${tutorial._id}/edit`} >
                                             <Button variant="outline-secondary" size="sm" className="mx-2"><FiEdit></FiEdit></Button>

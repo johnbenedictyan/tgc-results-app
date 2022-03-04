@@ -84,7 +84,7 @@ const InnerForm = (props: FormikProps<FormValues>) => {
                                                 </div>
                                             ))
                                         ) : null}
-                                        <Button variant='outline-secondary' onClick={() => arrayHelpers.push(new Types.ObjectId())} className='mt-2'>
+                                        <Button variant='outline-secondary' onClick={() => arrayHelpers.push(values.allStudents[0]._id)} className='mt-2'>
                                             Add new Student
                                         </Button>
                                     </div>
@@ -145,11 +145,13 @@ const BatchForm = withFormik<BatchFormProps, FormValues>({
 
         const putData = async (values: FormValues) => {
             let hasErrors = false;
-            let modifiedValues = {
-                batchCode: values.batchCode,
-                students: values.students
-            }
-            console.log(values.students);
+            // let modifiedValues = {
+            //     batchCode: values.batchCode,
+            //     students: values.students
+            // }
+            console.log(values.students[0]);
+            console.log(Types.ObjectId.isValid(values.students[0]));
+            console.log("HIHI", typeof(values.students[0]));
             // for (let i = 0; i < modifiedValues.students.length; i++) {
             //     modifiedValues.students[i] = new Types.ObjectId(modifiedValues.students[i])
             //   }

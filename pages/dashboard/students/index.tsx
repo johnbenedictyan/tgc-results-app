@@ -88,9 +88,9 @@ export async function getServerSideProps() {
     /* find all the data in our database */
     const result = await userModel.find({ role: "STUDENT" }).exec();
     const students = result.map((doc) => {
-        const batch: IUser = doc.toObject()
-        batch._id = batch._id!.toString()
-        return batch
+        const student: IUser = doc.toObject()
+        student._id = student._id!.toString()
+        return student
     })
 
     return { props: { students: students } }
