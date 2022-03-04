@@ -17,7 +17,9 @@ const TutorialsHome = ({ tutorials }: TutorialsHomeProps) => {
             <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 className="h2">Tutorials</h1>
                 <ButtonToolbar className="mb-2 mb-md-0">
-                    <Button variant="outline-secondary" size="sm">Create Tutorial</Button>
+                    <Link href="/dashboard/tutorials/new">
+                        <Button variant="outline-secondary" size="sm">Create Tutorial</Button>
+                    </Link>
                 </ButtonToolbar>
             </div>
             <Row className="border rounded mx-2">

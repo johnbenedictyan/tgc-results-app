@@ -13,7 +13,6 @@ import tutorialModel from "../../../../models/tutorialModel";
 interface IBatchShow {
     batchName: string;
     questions: Array<IQuestionShow>;
-    noOfStudents: number;
 }
 
 interface IQuestionShow {
@@ -111,14 +110,12 @@ export async function getServerSideProps({ params }: any) {
     await dbConnect()
 
     const tutorial: ITutorial = await tutorialModel.findById(params.id).lean();
-    const allBatches: Array<IBatch> = await batchModel.find({}).lean();
     const batchesNeeded: Array<string> = await submissionModel.find({ tutorialCode: tutorial.tutorialCode }).distinct('batchCode').exec();
     const submissionsForThisTutorial: Array<ISubmission> = await submissionModel.find({ tutorialCode: tutorial.tutorialCode }).exec();
     let batches: Array<IBatchShow> = batchesNeeded.map((batchCode) => {
         let initialBatch: IBatchShow = {
             batchName: batchCode,
-            questions: new Array<IQuestionShow>(),
-            noOfStudents: allBatches.filter(batch => batch.batchCode == batchCode)[0].students.length
+            questions: new Array<IQuestionShow>()
         }
 
         tutorial.questionCodes.forEach(questionCode => {
@@ -142,6 +139,9 @@ export async function getServerSideProps({ params }: any) {
                 (submissionElement.questionCode == questionElement.code
                     && submissionElement.batchCode == batchElement.batchName)
             );
+            let submissionsAttempted = submissionsForThisQn.filter(
+                submissionElement => submissionElement.result.toUpperCase() != 'NO ATTEMPT'
+            );
             let submissionsPassed = submissionsForThisQn.filter(
                 submissionElement => submissionElement.result.toUpperCase() == 'PASSED'
             );
@@ -149,9 +149,9 @@ export async function getServerSideProps({ params }: any) {
                 submissionElement => submissionElement.result.toUpperCase() == 'FAILED'
             );
             questionArr[questionIndex].noOfSubmissions = submissionsForThisQn.length;
-            questionArr[questionIndex].percentageAttempted = batchElement.noOfStudents == 0
+            questionArr[questionIndex].percentageAttempted = submissionsForThisQn.length == 0
                 ? 0
-                : Math.round(submissionsForThisQn.length / batchElement.noOfStudents * 100);
+                : Math.round(submissionsAttempted.length / submissionsForThisQn.length * 100);
             questionArr[questionIndex].percentageFailed = submissionsForThisQn.length == 0
                 ? 0
                 : Math.round(submissionsFailed.length / submissionsForThisQn.length * 100);

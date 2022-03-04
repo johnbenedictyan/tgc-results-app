@@ -136,11 +136,21 @@ const TutorialForm = withFormik<TutorialFormProps, FormValues>({
     mapPropsToValues: props => {
 
         return {
-            group: props.initialValues ? props.initialValues.group : null || '',
-            title: props.initialValues ? props.initialValues.title : null || '',
-            order: props.initialValues ? props.initialValues.order : null || 1,
-            tutorialCode: props.initialValues ? props.initialValues.tutorialCode : null || '',
-            questionCodes: props.initialValues ? props.initialValues.questionCodes : null || ["1", "2"]
+            group: props.initialValues ?
+                props.initialValues.group
+                : null || '',
+            title: props.initialValues ?
+                props.initialValues.title
+                : null || '',
+            order: props.initialValues ?
+                props.initialValues.order
+                : null || 1,
+            tutorialCode: props.initialValues ?
+                props.initialValues.tutorialCode
+                : null || '',
+            questionCodes: props.initialValues ?
+                props.initialValues.questionCodes
+                : null || []
         };
     },
 
@@ -235,7 +245,9 @@ const TutorialForm = withFormik<TutorialFormProps, FormValues>({
             }
         }
 
-        formikBag.props.newTutorial == true ? postData(values) : putData(values);
+        formikBag.props.newTutorial == true
+            ? postData(values)
+            : putData(values);
     },
 })(InnerForm);
 
