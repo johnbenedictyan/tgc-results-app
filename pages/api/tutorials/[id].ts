@@ -1,11 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import ITutorial from "../../../interfaces/tutorial";
 import dbConnect from "../../../lib/dbConnect";
+import submissionModel from "../../../models/submissionModel";
 import tutorialModel from "../../../models/tutorialModel";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { method } = req;
 
-    let tutorial;
+    let tutorial: ITutorial | null;
 
     await dbConnect();
 
@@ -32,6 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             if (tutorial === null) {
                 res.status(404);
             } else {
+                submissionModel.deleteMany({ tutorialCode: tutorial.tutorialCode }).exec();
                 res.json({ NextApiResponse: "Tutorial deleted Successfully" });
             }
             break;

@@ -1,11 +1,14 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import IUser from "../../../interfaces/user";
 import dbConnect from "../../../lib/dbConnect";
+import batchModel from "../../../models/batchModel";
+import submissionModel from "../../../models/submissionModel";
 import userModel from "../../../models/userModel";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { method } = req;
 
-    let student;
+    let student: IUser | null;
 
     await dbConnect();
 
@@ -32,6 +35,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             if (student === null) {
                 res.status(404);
             } else {
+                submissionModel.deleteMany({ email: student.email }).exec();
+                batchModel.updateMany({ 'students._id' : {
+                    $in: student._id
+                }}, {
+                    $pull: {
+                        'students': {
+                            _id: student._id
+                        }
+                    }
+                });
                 res.json({ NextApiResponse: "Student deleted Successfully" });
             }
             break;
