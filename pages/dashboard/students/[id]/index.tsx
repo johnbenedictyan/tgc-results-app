@@ -92,12 +92,8 @@ export async function getServerSideProps({ params }: any) {
     })
     student._id = student._id!.toString()
 
-    console.log(batches);
-    console.log(submissions)
-
     const tutorialsNeeded = await submissionModel.find({ email: student.email }).distinct('tutorialCode').lean();
 
-    // console.log(tutorialsNeeded);
     const modifiedBatches = batches.map((batchObj) => {
         const tutorials = tutorialsNeeded.map((tutorialCode) => {
             let noOfQuestions = submissions.filter((submissionObj) => {
@@ -145,10 +141,6 @@ export async function getServerSideProps({ params }: any) {
                 : Math.round(noOfQuestionsAttempted / noOfQuestions * 100)
         }
     })
-
-    console.log(tutorials)
-    console.log(modifiedBatches[0].tutorials)
-
 
     return { props: { student, modifiedBatches } }
 }

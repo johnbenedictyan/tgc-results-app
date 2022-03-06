@@ -125,6 +125,11 @@ const StudentForm = withFormik<StudentFormProps, FormValues>({
 
         const putData = async (values: any) => {
             let hasErrors = false;
+            // const { name, email } = values;
+            // let modifiedValues = {
+            //     name,
+            //     email
+            // }
             try {
                 const res = await fetch(`/api/students/${id}`, {
                     method: 'PUT',

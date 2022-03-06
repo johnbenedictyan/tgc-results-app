@@ -97,7 +97,6 @@ export async function getServerSideProps() {
         submission.dateTime = moment(submission.dateTime).fromNow();
         return submission
     })
-    console.log(submissions)
 
     return { props: { submissions: submissions } }
 }
