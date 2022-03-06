@@ -1,31 +1,26 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { TutorialController } from "../../../controllers/tutorialController";
 import dbConnect from "../../../lib/dbConnect";
-import tutorialModel from "../../../models/tutorialModel";
+import userModel from "../../../models/userModel";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { method } = req;
-
-    const tutorialController = new TutorialController();
 
     await dbConnect();
 
     switch (method) {
         case 'GET':
-            const tutorials = await tutorialModel.find();
-            res.json({ tutorials });
+            const students = await userModel.find({ role: "STUDENT" }).exec();
+            res.json({ students });
             break;
         case 'POST':
-            // const tutorial = await tutorialModel.findOne({ _id: req.body._id });
-            const tutorial = null;
-            if (tutorial === null) {
-                const result = await tutorialModel.create(req.body);
+            const student = await userModel.findOne({ _id: req.body._id });
+            if (student === null) {
+                const result = await userModel.create(req.body);
                 if (result === null) {
                     res.status(500);
                 } else {
                     res.status(201).json({ status: 201, data: result });
                 }
-
             } else {
                 res.status(422);
             }

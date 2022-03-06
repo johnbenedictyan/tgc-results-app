@@ -149,9 +149,9 @@ const BatchForm = withFormik<BatchFormProps, FormValues>({
             //     batchCode: values.batchCode,
             //     students: values.students
             // }
-            console.log(values.students[0]);
-            console.log(Types.ObjectId.isValid(values.students[0]));
-            console.log("HIHI", typeof(values.students[0]));
+            // console.log(values.students[0]);
+            // console.log(Types.ObjectId.isValid(values.students[0]));
+            // console.log("HIHI", typeof(values.students[0]));
             // for (let i = 0; i < modifiedValues.students.length; i++) {
             //     modifiedValues.students[i] = new Types.ObjectId(modifiedValues.students[i])
             //   }

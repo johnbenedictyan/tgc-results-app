@@ -3,9 +3,12 @@ import { ReactElement } from "react";
 import { Col, Row } from "react-bootstrap";
 import DashboardLayout from "../../../components/dashboardLayout";
 import BatchForm from "../../../components/forms/batchForm";
+import dbConnect from "../../../lib/dbConnect";
+import userModel from "../../../models/userModel";
 
-export default function NewBatchPage() {
+const NewBatchPage = ({ modifiedStudents }: any) => {
     const router = useRouter();
+    const initialValues = { allStudents: modifiedStudents };
     return (
         <>
             <div className="pt-3 pb-2 mb-3 border-bottom">
@@ -13,7 +16,7 @@ export default function NewBatchPage() {
             </div>
             <Row>
                 <Col>
-                    <BatchForm newBatch={true} router={router} />
+                    <BatchForm initialValues={initialValues} newBatch={true} router={router} />
                 </Col>
             </Row>
         </>
@@ -27,3 +30,20 @@ NewBatchPage.getLayout = function getLayout(page: ReactElement) {
         </DashboardLayout>
     )
 }
+
+export async function getServerSideProps({ params }: any) {
+    await dbConnect()
+
+    const students = await userModel.find({ role: "STUDENT" }).lean();
+    let modifiedStudents: Array<any> = [];
+    students.forEach((element) => {
+        modifiedStudents.push({
+            _id: element._id.toString(),
+            name: element.name
+        })
+    })
+
+    return { props: { modifiedStudents: modifiedStudents } }
+}
+
+export default NewBatchPage;

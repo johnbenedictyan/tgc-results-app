@@ -41,11 +41,11 @@ const DashboardLayout: NextComponentType<Props> = ({ children }) => (
                                     Students
                                 </a>
                             </li>
-                            <li className="nav-item">
+                            {/* <li className="nav-item">
                                 <a className={`nav-link ${styles.sidebarNavLink}`} href="/dashboard/staff">
                                     Staff
                                 </a>
-                            </li>
+                            </li> */}
                             <li className="nav-item">
                                 <a className={`nav-link ${styles.sidebarNavLink}`} href="/dashboard/submissions">
                                     Submissions

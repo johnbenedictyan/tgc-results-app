@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ReactElement } from "react";
-import { Button, ButtonGroup, ButtonToolbar, Col, Row } from "react-bootstrap";
+import { useRouter } from "next/router";
+import { ReactElement, useState } from "react";
+import { Button, ButtonGroup, ButtonToolbar, Col, Modal, Row } from "react-bootstrap";
 import { FiEdit, FiEye, FiTrash2 } from "react-icons/fi";
 import DashboardLayout from "../../../components/dashboardLayout";
 import IUser from "../../../interfaces/user";
@@ -12,6 +13,34 @@ type StudentsHomeProps = {
 }
 
 const StudentsHome = ({ students }: StudentsHomeProps) => {
+    const router = useRouter();
+
+    const [show, setShow] = useState(false);
+    const [objString, setObjString] = useState('');
+    const [objId, setObjId] = useState('');
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    const handleDelete = () => {
+        const contentType = 'application/json'
+        if (objId) {
+            try {
+                fetch(`/api/students/${objId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        Accept: contentType,
+                        'Content-Type': contentType,
+                    }
+                }).then(() => {
+                    handleClose();
+                    router.replace(router.asPath);
+                })
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    }
+
     return (
         <>
             <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -62,7 +91,11 @@ const StudentsHome = ({ students }: StudentsHomeProps) => {
                                         </Link>
                                     </ButtonGroup>
                                     <ButtonGroup>
-                                        <Button variant="outline-secondary" size="sm" className="mx-2"><FiTrash2></FiTrash2></Button>
+                                        <Button variant="outline-secondary" size="sm" className="mx-2" onClick={() => {
+                                            setObjString(student.name);
+                                            setObjId(student._id!);
+                                            handleShow();
+                                        }}><FiTrash2></FiTrash2></Button>
                                     </ButtonGroup>
                                 </ButtonToolbar>
                             </Col>
@@ -70,6 +103,20 @@ const StudentsHome = ({ students }: StudentsHomeProps) => {
                     ))}
                 </Col>
             </Row>
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm Delete</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{`Are you sure you want to delete ${objString}?`}</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="danger" onClick={handleDelete}>
+                        Confirm Delete
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     )
 }
