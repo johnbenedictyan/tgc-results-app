@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import ISubmission from "../../../interfaces/submission";
+import adminHandler from "../../../lib/adminHandler";
 import dbConnect from "../../../lib/dbConnect";
 import submissionModel from "../../../models/submissionModel";
 
@@ -8,6 +9,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { method } = req;
 
     let submission: ISubmission | null;
+
+    adminHandler(req, res);
 
     await dbConnect();
 

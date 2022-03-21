@@ -1,8 +1,9 @@
 import * as jwt from "jsonwebtoken";
 import { NextApiRequest, NextApiResponse } from "next";
-import passport from "passport";
 import dbConnect from "../../../lib/dbConnect";
-import { JWT_SECRET } from "../../../util/secrets";
+import userModel from "../../../models/userModel";
+import { JWT_SECRET } from '../../../util/secrets';
+
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { method } = req;
@@ -11,15 +12,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     switch (method) {
         case 'POST':
-            passport.authenticate("local", function (err, user, info) {
-                // no async/await because passport works only with callback ..
-                if (!user) {
-                    return res.status(401).json({ status: "error", code: "unauthorized" });
-                } else {
-                    const token = jwt.sign({ username: user.username }, JWT_SECRET);
+            const { email, password } = req.body;
+            let user = await userModel.findOne({ email }).exec();
+            if (!user) {
+                return res.status(401).json({ status: "error", code: "unauthorized" });
+            }
+            user.comparePassword(password, (err: Error, isMatch: boolean) => {
+                if (isMatch) {
+                    const token = jwt.sign({ email: user.email, role: user.role }, JWT_SECRET);
                     res.status(200).send({ token: token });
                 }
+                return res.status(401).json({ status: "error", code: "unauthorized" });
             });
+            break;
         default:
             res.status(400).json({ success: false });
             break;

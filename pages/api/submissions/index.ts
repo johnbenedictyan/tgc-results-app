@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import adminHandler from "../../../lib/adminHandler";
 import dbConnect from "../../../lib/dbConnect";
 import submissionModel from "../../../models/submissionModel";
 
@@ -9,6 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     switch (method) {
         case 'GET':
+            adminHandler(req, res);
             const submissions = await submissionModel.find();
             res.json({ submissions });
             break;

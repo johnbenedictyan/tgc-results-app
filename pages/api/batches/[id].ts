@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import IBatch from "../../../interfaces/batch";
+import adminHandler from "../../../lib/adminHandler";
 import dbConnect from "../../../lib/dbConnect";
 import batchModel from "../../../models/batchModel";
 
@@ -7,6 +8,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { method } = req;
 
     let batch: IBatch | null;
+
+    adminHandler(req, res);
 
     await dbConnect();
 

@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import IUser from "../../../interfaces/user";
+import adminHandler from "../../../lib/adminHandler";
 import dbConnect from "../../../lib/dbConnect";
 import batchModel from "../../../models/batchModel";
 import submissionModel from "../../../models/submissionModel";
@@ -8,6 +9,8 @@ import userModel from "../../../models/userModel";
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { method } = req;
 
+    adminHandler(req, res);
+    
     let student: IUser | null;
 
     await dbConnect();
