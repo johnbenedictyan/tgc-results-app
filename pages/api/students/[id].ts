@@ -19,24 +19,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case 'GET':
             student = await userModel.findOne({ _id: req.query.id });
             if (student === null) {
-                res.status(404);
+                return res.status(404);
             } else {
-                res.json(student);
+                return res.json(student);
             }
-            break;
         case 'PUT':
             student = await userModel.findOneAndUpdate({ _id: req.query.id }, req.body);
             if (student === null) {
-                res.status(404);
+                return res.status(404);
             } else {
                 const updatedStudent = { _id: req.query.id, ...req.body };
-                res.json({ status: res.status, data: updatedStudent });
+                return res.json({ status: res.status, data: updatedStudent });
             }
-            break;
         case 'DELETE':
             student = await userModel.findOneAndDelete({ _id: req.query.id });
             if (student === null) {
-                res.status(404);
+                return res.status(404);
             } else {
                 submissionModel.deleteMany({ email: student.email }).exec();
                 batchModel.updateMany({ 'students._id' : {
@@ -48,11 +46,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         }
                     }
                 });
-                res.json({ NextApiResponse: "Student deleted Successfully" });
+                return res.json({ NextApiResponse: "Student deleted Successfully" });
             }
-            break;
         default:
-            res.status(400).json({ success: false });
-            break;
+            return res.status(400).json({ success: false });
     }
 }

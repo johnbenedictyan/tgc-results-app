@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     switch (method) {
         case 'GET':
             const tutorials = await tutorialModel.find();
-            res.json({ tutorials });
+            return res.json({ tutorials });
             break;
         case 'POST':
             // const tutorial = await tutorialModel.findOne({ _id: req.body._id });
@@ -21,17 +21,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             if (tutorial === null) {
                 const result = await tutorialModel.create(req.body);
                 if (result === null) {
-                    res.status(500);
+                    return res.status(500);
                 } else {
-                    res.status(201).json({ status: 201, data: result });
+                    return res.status(201).json({ status: 201, data: result });
                 }
 
             } else {
-                res.status(422);
+                return res.status(422);
             }
             break;
         default:
-            res.status(400).json({ success: false });
+            return res.status(400).json({ success: false });
             break;
     }
 }

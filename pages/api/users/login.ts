@@ -20,13 +20,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             user.comparePassword(password, (err: Error, isMatch: boolean) => {
                 if (isMatch) {
                     const token = jwt.sign({ email: user.email, role: user.role }, JWT_SECRET);
-                    res.status(200).send({ token: token });
+                    return res.status(200).send({ token: token });
                 }
                 return res.status(401).json({ status: "error", code: "unauthorized" });
             });
-            break;
         default:
-            res.status(400).json({ success: false });
-            break;
+            return res.status(400).json({ success: false });
     }
 }

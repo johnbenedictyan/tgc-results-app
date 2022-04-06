@@ -12,24 +12,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case 'GET':
             adminHandler(req, res);
             const submissions = await submissionModel.find();
-            res.json({ submissions });
-            break;
+            return res.json({ submissions });
         case 'POST':
             const submission = await submissionModel.findOne({ _id: req.body._id });
             if (submission === null) {
                 const result = await submissionModel.create(req.body);
                 if (result === null) {
-                    res.status(500);
+                    return res.status(500);
                 } else {
-                    res.status(201).json({ status: 201, data: result });
+                    return res.status(201).json({ status: 201, data: result });
                 }
 
             } else {
-                res.status(422);
+                return res.status(422);
             }
-            break;
         default:
-            res.status(400).json({ success: false });
-            break;
+            return res.status(400).json({ success: false });
     }
 }

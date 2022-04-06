@@ -13,10 +13,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case 'POST':
             await userModel.create(req.body);
             const token = jwt.sign({ email: req.body.email, role: req.body.role, scope: req.body.scope }, JWT_SECRET);
-            res.status(200).send({ token: token });
-            break;
+            return res.status(200).send({ token: token });
         default:
-            res.status(400).json({ success: false });
-            break;
+            return res.status(400).json({ success: false });
     }
 }
