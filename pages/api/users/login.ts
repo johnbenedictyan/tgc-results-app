@@ -13,18 +13,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     switch (method) {
         case 'POST':
             const { email, password } = req.body;
-            let user = await userModel.findOne({ email }).exec();
-            if (!user) {
-                return res.status(401).json({ status: "error", code: "unauthorized" });
-            }
-            user.comparePassword(password, (err: Error, isMatch: boolean) => {
-                if (isMatch) {
-                    const token = jwt.sign({ email: user.email, role: user.role }, JWT_SECRET);
-                    return res.status(200).send({ token: token });
-                } else {
-                    return res.status(401).json({ status: "error", code: "unauthorized" });   
+            try {
+                let user = await userModel.findOne({ email }).exec();
+                if (!user) {
+                    return res.status(401).json({ status: "error", code: "unauthorized" });
                 }
-            });
+                try {
+                    user.comparePassword(password, (err: Error, isMatch: boolean) => {
+                        if (isMatch) {
+                            const token = jwt.sign({ email: user.email, role: user.role }, JWT_SECRET);
+                            return res.status(200).send({ token: token });
+                        } else {
+                            return res.status(401).json({ status: "error", code: "unauthorized" });
+                        }
+                    });
+                } catch (err) {
+                    return res.status(400).json({ success: false });
+                }
+            } catch (err) {
+                return res.status(400).json({ success: false });
+            }
         default:
             return res.status(400).json({ success: false });
     }
