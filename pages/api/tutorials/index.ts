@@ -14,7 +14,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case 'GET':
             const tutorials = await tutorialModel.find();
             return res.json({ tutorials });
-            break;
         case 'POST':
             // const tutorial = await tutorialModel.findOne({ _id: req.body._id });
             const tutorial = null;
@@ -29,9 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             } else {
                 return res.status(422);
             }
-            break;
         default:
             return res.status(400).json({ success: false });
-            break;
     }
 }
