@@ -21,8 +21,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 if (isMatch) {
                     const token = jwt.sign({ email: user.email, role: user.role }, JWT_SECRET);
                     return res.status(200).send({ token: token });
+                } else {
+                    return res.status(401).json({ status: "error", code: "unauthorized" });   
                 }
-                return res.status(401).json({ status: "error", code: "unauthorized" });
             });
         default:
             return res.status(400).json({ success: false });
