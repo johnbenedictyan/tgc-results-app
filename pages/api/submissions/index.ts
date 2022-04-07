@@ -20,13 +20,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 if (result === null) {
                     return res.status(500);
                 } else {
-                    return res.status(201).json({ status: 201, data: result });
+                    return res.json({ status: 201, data: result });
                 }
 
             } else {
                 return res.status(422);
             }
         default:
-            return res.status(400).json({ success: false });
+            return res.json({ status: 400, success: false });
     }
 }

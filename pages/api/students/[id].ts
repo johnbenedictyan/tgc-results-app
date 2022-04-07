@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { method } = req;
 
     adminHandler(req, res);
-    
+
     let student: IUser | null;
 
     await dbConnect();
@@ -37,9 +37,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 return res.status(404);
             } else {
                 submissionModel.deleteMany({ email: student.email }).exec();
-                batchModel.updateMany({ 'students._id' : {
-                    $in: student._id
-                }}, {
+                batchModel.updateMany({
+                    'students._id': {
+                        $in: student._id
+                    }
+                }, {
                     $pull: {
                         'students': {
                             _id: student._id
@@ -49,6 +51,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 return res.json({ NextApiResponse: "Student deleted Successfully" });
             }
         default:
-            return res.status(400).json({ success: false });
+            return res.json({ status: 400, success: false });
     }
 }

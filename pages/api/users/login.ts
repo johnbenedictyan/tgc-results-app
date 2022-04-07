@@ -16,24 +16,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             try {
                 let user = await userModel.findOne({ email }).exec();
                 if (!user) {
-                    return res.status(401).json({ status: "error", code: "unauthorized" });
+                    return res.json({ status: 401, code: "unauthorized" });
                 }
                 try {
                     user.comparePassword(password, (err: Error, isMatch: boolean) => {
                         if (isMatch) {
                             const token = jwt.sign({ email: user.email, role: user.role }, JWT_SECRET);
-                            return res.status(200).send({ token: token });
+                            return res.send({ status: 200, token: token });
                         } else {
-                            return res.status(401).json({ status: "error", code: "unauthorized" });
+                            return res.json({ status: 401, code: "unauthorized" });
                         }
                     });
                 } catch (err) {
-                    return res.status(400).json({ success: false });
+                    return res.json({ status: 400, success: false });
                 }
             } catch (err) {
-                return res.status(400).json({ success: false });
+                return res.json({ status: 400, success: false });
             }
         default:
-            return res.status(400).json({ success: false });
+            return res.json({ status: 400, success: false });
     }
 }

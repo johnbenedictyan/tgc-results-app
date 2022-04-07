@@ -27,16 +27,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 return res.status(404);
             } else {
                 const updatedBatch = { _id: req.query.id, ...req.body };
-                return res.json({ status: res.status, data: updatedBatch });
+                return res.json({ status: 200, data: updatedBatch });
             }
         case 'DELETE':
             batch = await batchModel.findOneAndDelete({ _id: req.query.id });
             if (batch === null) {
                 return res.status(404);
             } else {
-                return res.json({ status: res.status, data: { message: "Batch deleted Successfully" } });
+                return res.json({ status: 200, data: { message: "Batch deleted Successfully" } });
             }
         default:
-            return res.status(400).json({ success: false });
+            return res.json({ status: 400, success: false });
     }
 }
