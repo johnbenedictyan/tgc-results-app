@@ -9,4 +9,4 @@ const moduleExports = withPWA({
     compress: false,
 });
 
-module.exports = moduleExports;
+module.exports = {};
