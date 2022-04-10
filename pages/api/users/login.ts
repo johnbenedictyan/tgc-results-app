@@ -34,6 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             } catch (err) {
                 return res.json({ status: 400, success: false });
             }
+            break;
         default:
             return res.json({ status: 400, success: false });
     }
