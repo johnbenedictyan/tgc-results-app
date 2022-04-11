@@ -13,7 +13,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     switch (method) {
         case 'GET':
             const batches = await batchModel.find();
-            return res.json({ batches })
+            res.json({ batches })
+            break;
         case 'POST':
             const batch = await batchModel.findOne({ batchCode: req.body.batchCode });
             if (batch === null) {
@@ -21,14 +22,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     req.body
                 )
                 if (result === null) {
-                    return res.status(500);
+                    res.status(500);
                 } else {
-                    return res.json({ status: 201, data: result });
+                    res.json({ status: 201, data: result });
                 }
             } else {
-                return res.status(422);
+                res.status(422);
             }
+            break;
         default:
-            return res.json({ status: 400, success: false });
+            res.json({ status: 400, success: false });
+            break;
     }
 }

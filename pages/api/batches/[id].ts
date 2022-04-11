@@ -17,26 +17,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case 'GET':
             batch = await batchModel.findOne({ _id: req.query.id });
             if (batch === null) {
-                return res.status(404);
+                res.status(404);
             } else {
-                return res.json(batch);
+                res.json(batch);
             }
+            break;
         case 'PUT':
             batch = await batchModel.findOneAndUpdate({ _id: req.query.id }, req.body);
             if (batch === null) {
-                return res.status(404);
+                res.status(404);
             } else {
                 const updatedBatch = { _id: req.query.id, ...req.body };
-                return res.json({ status: 200, data: updatedBatch });
+                res.json({ status: 200, data: updatedBatch });
             }
+            break;
         case 'DELETE':
             batch = await batchModel.findOneAndDelete({ _id: req.query.id });
             if (batch === null) {
-                return res.status(404);
+                res.status(404);
             } else {
-                return res.json({ status: 200, data: { message: "Batch deleted Successfully" } });
+                res.json({ status: 200, data: { message: "Batch deleted Successfully" } });
             }
+            break;
         default:
-            return res.json({ status: 400, success: false });
+            res.json({ status: 400, success: false });
+            break;
     }
 }

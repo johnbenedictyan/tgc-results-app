@@ -14,11 +14,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             try {
                 await userModel.create(req.body);
                 const token = jwt.sign({ email: req.body.email, role: req.body.role, scope: req.body.scope }, JWT_SECRET);
-                return res.send({ status: 200, token: token });
+                res.send({ status: 200, token: token });
             } catch (err) {
-                return res.json({ status: 400, success: false });
+                res.json({ status: 400, success: false });
             }
+            break;
         default:
-            return res.json({ status: 400, success: false });
+            res.json({ status: 400, success: false });
+            break;
     }
 }

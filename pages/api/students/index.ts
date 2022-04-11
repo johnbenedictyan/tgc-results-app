@@ -13,20 +13,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     switch (method) {
         case 'GET':
             const students = await userModel.find({ role: "STUDENT" }).exec();
-            return res.json({ students });
+            res.json({ students });
+            break;
         case 'POST':
             const student = await userModel.findOne({ _id: req.body._id });
             if (student === null) {
                 const result = await userModel.create(req.body);
                 if (result === null) {
-                    return res.status(500);
+                    res.status(500);
                 } else {
-                    return res.json({ status: 201, data: result });
+                    res.json({ status: 201, data: result });
                 }
             } else {
-                return res.status(422);
+                res.status(422);
             }
+            break;
         default:
-            return res.json({ status: 400, success: false });
+            res.json({ status: 400, success: false });
+            break;
     }
 }

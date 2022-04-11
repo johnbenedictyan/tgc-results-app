@@ -18,26 +18,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case 'GET':
             submission = await submissionModel.findOne({ _id: req.query.id });
             if (submission === null) {
-                return res.status(404);
+                res.status(404);
             } else {
-                return res.json(submission);
+                res.json(submission);
             }
+            break;
         case 'PUT':
             submission = await submissionModel.findOneAndUpdate({ _id: req.query.id }, req.body);
             if (submission === null) {
-                return res.status(404);
+                res.status(404);
             } else {
                 const updatedSubmission = { _id: req.query.id, ...req.body };
-                return res.json({ status: res.status, data: updatedSubmission });
+                res.json({ status: res.status, data: updatedSubmission });
             }
+            break;
         case 'DELETE':
             submission = await submissionModel.findOneAndDelete({ _id: req.query.id });
             if (submission === null) {
-                return res.status(404);
+                res.status(404);
             } else {
-                return res.json({ NextApiResponse: "Submission deleted Successfully" });
+                res.json({ NextApiResponse: "Submission deleted Successfully" });
             }
+            break;
         default:
-            return res.json({ status: 400, success: false });
+            res.json({ status: 400, success: false });
+            break;
     }
 }

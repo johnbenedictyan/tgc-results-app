@@ -18,27 +18,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case 'GET':
             tutorial = await tutorialModel.findOne({ _id: req.query.id });
             if (tutorial === null) {
-                return res.status(404);
+                res.status(404);
             } else {
-                return res.json(tutorial);
+                res.json(tutorial);
             }
+            break;
         case 'PUT':
             tutorial = await tutorialModel.findOneAndUpdate({ _id: req.query.id }, req.body);
             if (tutorial === null) {
-                return res.status(404);
+                res.status(404);
             } else {
                 const updatedTutorial = { _id: req.query.id, ...req.body };
-                return res.json({ status: res.status, data: updatedTutorial });
+                res.json({ status: res.status, data: updatedTutorial });
             }
+            break;
         case 'DELETE':
             tutorial = await tutorialModel.findOneAndDelete({ _id: req.query.id });
             if (tutorial === null) {
-                return res.status(404);
+                res.status(404);
             } else {
                 submissionModel.deleteMany({ tutorialCode: tutorial.tutorialCode }).exec();
-                return res.json({ NextApiResponse: "Tutorial deleted Successfully" });
+                res.json({ NextApiResponse: "Tutorial deleted Successfully" });
             }
+            break;
         default:
-            return res.json({ status: 400, success: false });
+            res.json({ status: 400, success: false });
+            break;
     }
 }
