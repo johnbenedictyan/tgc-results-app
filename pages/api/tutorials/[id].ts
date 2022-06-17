@@ -23,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 res.json(tutorial);
             }
             break;
-        case 'PUT':
+        case 'PUT':            
             tutorial = await tutorialModel.findOneAndUpdate({ _id: req.query.id }, req.body);
             if (tutorial === null) {
                 res.status(404);
